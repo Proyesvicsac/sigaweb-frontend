@@ -1,0 +1,9 @@
+<app-upload [disabled]="showProgress" (uploadStatusComponent)="uploadStatus($event)"
+  [id]="data.idPersonalDocumento" [fileLast]="data.nameFile" (errorUploadFail)="obtenerErrorFile($event)"
+></app-upload>
+<p *ngIf="showProgress"> progress <strong>{{percentage}}%</strong></p>
+<label class="error" [hidden]="!showUploadError">No se pudo Cargar el Archivo</label>
+<span class="text-danger" *ngIf="msgErrorFile.length>0">{{ msgErrorFile }}</span>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
+</div>

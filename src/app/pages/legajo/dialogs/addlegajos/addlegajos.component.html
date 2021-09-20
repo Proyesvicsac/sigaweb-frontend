@@ -1,0 +1,87 @@
+<div class="container">
+  <h3 mat-dialog-title>Agregar Legajo al Personal : {{ data.nombresPersonal }}</h3>
+
+  <form class="mat-dialog-content" (ngSubmit)="submit" #formControl="ngForm">
+
+    <div class="row">
+      <div class="col-4">
+        <mat-form-field color="accent" appearance="outline" style="width: 100%;">
+          <mat-label>Documento Entrega</mat-label>
+          <mat-select [(value)]="data.idDocumentoEntrega" style="width: 100%;" name="idDocumentoEntrega" required>
+            <mat-option *ngFor="let combo of listDocumentoEntrega" [value]="combo.id">
+              {{combo.descripcion}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-4">
+        <mat-form-field color="accent" appearance="outline" style="width: 100%;">
+          <mat-label>Cargo</mat-label>
+          <mat-select [(value)]="data.idTipoCargo" name="idTipoCargo" required>
+            <mat-option *ngFor="let combo of listTipoCargo" [value]="combo.id">
+              {{combo.descripcion}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-4">
+        <mat-form-field color="accent" appearance="outline" style="width: 100%;">
+          <mat-label>Labor</mat-label>
+          <mat-select [(value)]="data.idTipoLabor" name="idTipoLabor" required>
+            <mat-option *ngFor="let combo of listTipoLabor" [value]="combo.id">
+              {{combo.descripcion}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <mat-form-field color="accent" appearance="outline">
+          <mat-label>Fecha Emisión</mat-label>
+          <input matInput [matDatepicker]="pickerfechaEmision" [(ngModel)]="data.fechaEmision" name="fechaEmision"
+            required>
+          <mat-datepicker-toggle matSuffix [for]="pickerfechaEmision"></mat-datepicker-toggle>
+          <mat-datepicker #pickerfechaEmision></mat-datepicker>
+          <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-4">
+        <mat-form-field color="accent" appearance="outline">
+          <mat-label>Fecha Caducación</mat-label>
+          <input matInput [matDatepicker]="pickerfechaCaducacion" [(ngModel)]="data.fechaCaducacion"
+            name="fechaCaducacion" required>
+          <mat-datepicker-toggle matSuffix [for]="pickerfechaCaducacion"></mat-datepicker-toggle>
+          <mat-datepicker #pickerfechaCaducacion></mat-datepicker>
+          <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-4">
+        <mat-form-field color="accent" appearance="outline">
+          <mat-label>Número</mat-label>
+          <input matInput #input [(ngModel)]="data.numero" name="numero" required>
+          <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <mat-form-field color="accent" appearance="outline">
+          <mat-label>Glosa</mat-label>
+          <textarea matInput #input [(ngModel)]="data.glosa" name="glosa"></textarea>
+          <mat-error *ngIf="formControl.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div mat-dialog-actions>
+      <button mat-button type="submit" [disabled]="!formControl.valid"
+        (click)="confirmAdd()">Save</button>
+      <button mat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,191 @@
+<div class="row">
+  <div class="col-12" style="z-index: 1;">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-4">
+            <mat-form-field class="example-form-field" appearance="outline">
+              <mat-label>Nombres</mat-label>
+              <input matInput type="text" [(ngModel)]="filterData.nombres" (keyup.enter)="getPersonal()">
+              <button matSuffix mat-icon-button aria-label="Clear">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field class="example-form-field" appearance="outline">
+              <mat-label>N° Documento</mat-label>
+              <input matInput type="text" [(ngModel)]="filterData.nroDocumento" (keyup.enter)="getPersonal()">
+              <button matSuffix mat-icon-button aria-label="Clear">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="col-4 mt-3">
+            <mat-slide-toggle [(ngModel)]="filterData.isActive" (change)="getPersonal()">Activos?</mat-slide-toggle>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12" style="position: static;">
+            <mat-paginator showFirstLastButtons [length]="length" [pageSizeOptions]="[3,5,10]"
+              (page)="pageChanged($event)">
+            </mat-paginator>
+            <div class="example-container mat-elevation-z4">
+
+              <table mat-table class="table1" [dataSource]="dataSource" multiTemplateDataRows>
+                <!-- Expand Column -->
+                <ng-container matColumnDef="expand">
+                  <th class="table_init" mat-header-cell *matHeaderCellDef style="width: 50px;">*</th>
+                  <td class="table_init" mat-cell *matCellDef="let element; let i = dataIndex;"
+                    style="width: 50px; text-align: center; padding: 0;">
+                    <a mat-button (click)="expandCollapse(element, i)">
+                      <mat-icon *ngIf="!element.isExpand" mat-icon-button color='accent'>expand_more</mat-icon>
+                      <mat-icon *ngIf="element.isExpand" mat-icon-button color='accent'>chevron_right</mat-icon>
+                    </a>
+                  </td>
+                </ng-container>
+                <ng-container [matColumnDef]="'actions'" [sticky]="true">
+                  <th mat-header-cell *matHeaderCellDef style="width: 50px;"></th>
+                  <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button (click)="nuevoLegajo(element)">
+                      <mat-icon mat-icon-button color='accent'>library_add</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="idPersonal">
+                  <th mat-header-cell *matHeaderCellDef style="width: 10%; text-align: center; z-index: 1;"> No. </th>
+                  <td *matCellDef="let i = dataIndex;" style="text-align: center;"> {{ i + 1 }} </td>
+                </ng-container>
+                <ng-container matColumnDef="apellidoPaterno">
+                  <th mat-header-cell *matHeaderCellDef> Apellido Paterno </th>
+                  <td mat-cell *matCellDef="let element"> {{element.apellidoPaterno}} </td>
+                </ng-container>
+                <ng-container matColumnDef="apellidoMaterno">
+                  <th mat-header-cell *matHeaderCellDef> Apellido Paterno </th>
+                  <td mat-cell *matCellDef="let element"> {{element.apellidoMaterno}} </td>
+                </ng-container>
+                <ng-container matColumnDef="nombres">
+                  <th mat-header-cell *matHeaderCellDef> Nombres </th>
+                  <td mat-cell *matCellDef="let element"> {{element.nombres}} </td>
+                </ng-container>
+                <ng-container matColumnDef="nroDocumento">
+                  <th mat-header-cell *matHeaderCellDef> N° Documento </th>
+                  <td mat-cell *matCellDef="let element"> {{element.nroDocumento}} </td>
+                </ng-container>
+                <ng-container matColumnDef="fechaCese">
+                  <th mat-header-cell *matHeaderCellDef> Fecha Cese </th>
+                  <td mat-cell *matCellDef="let element"> {{element.fechaCese | date:'dd/MM/yyyy'}} </td>
+                </ng-container>
+                <ng-container matColumnDef="unidad">
+                  <th mat-header-cell *matHeaderCellDef> Unidad </th>
+                  <td mat-cell *matCellDef="let element"> {{element.unidad }} </td>
+                </ng-container>
+
+
+
+                <!-- Expanded Content Column - The detail row is made up of this one column -->
+                <ng-container matColumnDef="expandedDetail">
+                  <td mat-cell class="cellColor" *matCellDef="let element ; let i = dataIndex;"
+                    [attr.colspan]="displayedColumns.length">
+                    <div class="row student-element-detail innerTable" [class.subtable]="element.isExpand"
+                      [@detailExpand]="element.isExpand ? 'expanded' : 'collapsed'">
+                      <table mat-table class="table-striped subtabledetail" [dataSource]="dataSourceDetail[i]">
+                        <!-- Roll No Column -->
+                        <ng-container matColumnDef="index">
+                          <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
+                          <mat-cell *matCellDef="let element; let i = index;"> {{ i + 1 }} </mat-cell>
+                        </ng-container>
+
+                        <!-- Tipo Documento Entrega -->
+                        <ng-container matColumnDef="tipoDocumentoEntrega">
+                          <mat-header-cell *matHeaderCellDef> Tipo Documento </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.tipoDocumentoEntrega}} </mat-cell>
+                        </ng-container>
+
+                        <!-- Tipo Cargo -->
+                        <ng-container matColumnDef="tipoCargo">
+                          <mat-header-cell *matHeaderCellDef> Tipo Cargo </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.tipoCargo}} </mat-cell>
+                        </ng-container>
+
+                        <!-- Tip Labor -->
+                        <ng-container matColumnDef="tipoLabor">
+                          <mat-header-cell *matHeaderCellDef> Labor </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.tipoLabor}} </mat-cell>
+                        </ng-container>
+
+                        <!-- Fecha Emision -->
+                        <ng-container matColumnDef="fechaEmision">
+                          <mat-header-cell *matHeaderCellDef> Fecha Emisión </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.fechaEmision | date: 'dd/MM/yyyy'}} </mat-cell>
+                        </ng-container>
+
+                        <!-- Fecha Caducacion -->
+                        <ng-container matColumnDef="fechaCaducacion" [stickyEnd]="false">
+                          <mat-header-cell *matHeaderCellDef> Fecha Caducación </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.fechaCaducacion | date: 'dd/MM/yyyy'}}
+                          </mat-cell>
+                        </ng-container>
+
+                        <!-- Numero -->
+                        <ng-container matColumnDef="numero">
+                          <mat-header-cell *matHeaderCellDef> Numero </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.numero}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container [matColumnDef]="'actions'" [stickyEnd]="true">
+                          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                          <mat-cell *matCellDef="let element">
+                            <button mat-icon-button [matMenuTriggerFor]="menu"
+                              aria-label="Example icon-button with a menu">
+                              <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                              <button  mat-menu-item (click)="editLegajo(element)">
+                                <mat-icon mat-icon-button color='primary'>mode_edit</mat-icon>
+                                <span>Editar</span>
+                              </button>
+                              <button mat-menu-item (click)="deleteLegajo(element)">
+                                <mat-icon mat-icon-button color='warn'>delete</mat-icon>
+                                <span>Eliminar</span>
+                              </button>
+                              <button mat-menu-item (click)="uploadFile(element)">
+                                <mat-icon style="color: rgb(66, 182, 176);">cloud_upload</mat-icon>
+                                <span>Cargar Archivo</span>
+                              </button>
+                              <button mat-menu-item *ngIf="element.nameFile?.length>0" (click)="download(element.nameFile)">
+                                <mat-icon style="color: rgb(179, 160, 21);">cloud_download</mat-icon>
+                                <span>Descargar Archivo</span>
+                              </button>
+                            </mat-menu>
+                          </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumnsSecondTable" class="thead-dark">
+                        </mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumnsSecondTable;">
+                        </mat-row>
+                      </table>
+
+                    </div>
+                  </td>
+                </ng-container>
+
+
+
+                <tr class="table_init" mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr class="table_init" mat-row *matRowDef="let element; columns: displayedColumns"
+                  class="student-element-row" [class.student-expanded-row]="element.isExpand"></tr>
+
+                <!-- Extra row to show detail content column -->
+                <tr class="table_init" mat-row *matRowDef="let row; columns: ['expandedDetail']"
+                  class="student-detail-row"></tr>
+              </table>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

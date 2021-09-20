@@ -1,0 +1,13 @@
+<div class="container-upload">
+  <label class="badge badge-primary text-center font-weight-bold">Documento : {{nombreDocumento}}</label>
+  <button [disabled]="disabled"  [ngClass]="{'disabled': disabled}" class="button upload"
+  (click)="inputFile.click()">
+    Cargar Documento
+  </button>
+
+  <input
+    name="file"
+    id="file"
+    (change)="upload($event)" accept="image/x-png,image/gif,image/jpeg"
+    type="file" #inputFile hidden>
+</div>

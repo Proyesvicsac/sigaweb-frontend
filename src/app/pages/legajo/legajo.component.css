@@ -1,0 +1,96 @@
+tr.student-detail-row {
+  height: 0;
+}
+
+.subtable {
+  padding-left: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  overflow: auto;
+}
+.example-container {
+  height: 400px;
+  overflow-x: auto;
+}
+
+.cellColor {
+  background: rgb(221, 223, 222);
+}
+tr.student-element-row:not(.student-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.student-element-row:not(.student-expanded-row):active {
+  background: #efefef;
+}
+
+.student-element-row td {
+  border-bottom-width: 0;
+}
+
+
+
+.table1  {
+  width: 1204px;
+  table-layout:fixed;
+  display: table;
+  min-width: 800px;
+}
+
+.mat-cell,
+.mat-header-cell {
+  word-wrap: initial;
+  display: table-cell;
+  padding: 0px 10px;
+  line-break: unset;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+tr.mat-header-row.table_init {
+  background: rgb(126, 54, 54);
+  display: table-row;
+}
+tr.mat-header-row.table_init>th {
+  color: #efefef;
+  font-size: 14px;
+}
+tr.mat-row.student-element-row {
+  display: table-row;
+}
+
+.student-element-detail {
+  overflow: auto;
+  align-items: center;
+  width: 100%;
+  min-width: 300px;
+  max-width: 1200px;
+}
+
+.subtabledetail  {
+  overflow:hidden;
+}
+
+.subtabledetail mat-header-row{
+  background: rgb(34, 45, 143);
+}
+.subtabledetail mat-header-cell{
+  color: #efefef;
+  font-size: 14px;
+}
+.subtabledetail mat-header-row ,
+.subtabledetail mat-row{
+  display: table-row;
+}
+.subtabledetail mat-cell,
+.subtabledetail mat-header-cell {
+  word-wrap: initial;
+  display: table-cell;
+  padding: 0px 10px;
+  line-break: unset;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
